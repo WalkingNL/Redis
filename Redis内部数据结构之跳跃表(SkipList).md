@@ -2,10 +2,14 @@
 好的博客文章，就像一篇篇动人的故事一样，我喜欢那样的故事。我总是不太讲故事，主要还是因为不会讲。也许正因如此，我想讲一次能让自己喜欢的故事。哈哈。。。
 
 #### 我和跳跃表(skiplist)的故事
-2010年的冬天，我**背完**了链表，就是那种单链表的结构，就如下面的形式。没错，是背过的。
+2010年的冬天，我**背完**了链表，就是那种单链表的结构，如下。没错，是背过的。
 
     struct LinkedListNode
     {
         T data;
         struct LinkedListNode next;
     };
+
+![](https://github.com/WalkingNL/Pics/blob/master/List1.jpg)
+
+![](https://github.com/WalkingNL/Pics/blob/master/SkipList1.jpg)
