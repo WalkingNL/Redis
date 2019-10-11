@@ -38,7 +38,7 @@ Sorted sets是Redis中的一种数据类型，近似于一个Set和一个Hash的
     > zadd hackers 1912 "Alan Turing"
     (integer) 1
 
-表面上看，命令[ZADD](https://redis.io/commands/zadd)与命令[SADD](https://redis.io/commands/sadd)非常相似，但ZADD要比SADD多一个参数，这个参数就是`score`，它被放置在被添加进的元素前。(ZADD](https://redis.io/commands/zadd)其实也是一种可变参命令，因此，你可以随意指定多个score-value这样的分数-值对。当然了，上述例子中并没有体现这一点。
+表面上看，命令[ZADD](https://redis.io/commands/zadd)与命令[SADD](https://redis.io/commands/sadd)非常相似，但ZADD要比SADD多一个参数，这个参数就是`score`，它被放置在被添加进的元素前。[ZADD](https://redis.io/commands/zadd)其实也是一种可变参命令，因此，你可以随意指定多个score-value这样的分数-值对。当然了，上述例子中并没有体现这一点。
 
 使用sorted set，返回按照hackers的出生年月排序的列表非常简单，因为实际上，他们已经排好序了。
 
