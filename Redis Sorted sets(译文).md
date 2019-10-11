@@ -42,4 +42,16 @@ Sorted sets是Redis中的一种数据类型，近似于一个Set和一个Hash的
 
 使用sorted set，返回按照hackers的出生年月排序的列表非常简单，因为实际上，他们已经排好序了。
 
-实现注意：sorted set的实现经由一个包含skip list和hash table的双端口的数据结构完成。因此，每次执行添加一个元素的操作，Redis的时间效率为O(log(N))。这很好，但是当我们请求有序的元素时，Redis不需要做任何工作，因为所有元素已经排好序。
+实现说明：sorted set的实现经由一个包含skip list和hash table的双端口的数据结构完成。因此，每次执行添加一个元素的操作，Redis的时间效率为O(log(N))。这一点很好，但是当我们请求有序的元素时，Redis不必再做任何工作，因为所有元素已经排好序。
+
+    > zrange hackers 0 -1
+    1) "Alan Turing"
+    2) "Hedy Lamarr"
+    3) "Claude Shannon"
+    4) "Alan Kay"
+    5) "Anita Borg"
+    6) "Richard Stallman"
+    7) "Sophie Wilson"
+    8) "Yukihiro Matsumoto"
+    9) "Linus Torvalds"  
+注意：0和-1意味着从索引0开始到最后一个元素(-1在这里的作用就像[LRANGE]()命令)
