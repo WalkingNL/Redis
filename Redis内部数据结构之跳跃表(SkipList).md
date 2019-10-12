@@ -139,7 +139,7 @@
 ![](https://github.com/WalkingNL/Pics/blob/master/SkipList7.jpg)
 
 ### Redis中的SkipList
-在进一步阅读本节的内容之前，可以先看一下我翻译的一篇[文章]()，当然了，你也可以直接去官网阅读，这是[地址](https://redis.io/topics/data-types-intro)。
+在进一步阅读本节的内容之前，可以先看一下我翻译的一篇[文章](https://github.com/WalkingNL/Redis/blob/master/Redis%20Sorted%20sets(译文).md)，当然了，你也可以直接去官网阅读，这是[地址](https://redis.io/topics/data-types-intro)。
 
 上面的内容，基础性的介绍了跳跃表。在本节中，将会剖析跳跃表在Redis中的应用。准确的说是在Sorted set中的应用。
 
