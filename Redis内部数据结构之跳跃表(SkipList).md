@@ -58,6 +58,7 @@
 ![](https://github.com/WalkingNL/Pics/blob/master/LinkList5.jpg)
 
 ###### 查询 及 插入 操作的伪代码
+把代码放在这里考虑到两个方面的原因。第一点，代码并不是最重要的，如果真正理解了原理，相信代码也能自己写出来；第二点，代码的存在对于有些人，往往会干扰对文字的阅读。
 查询：
 
     find(list, key) // 在跳跃表中查找值为key的节点
@@ -72,25 +73,34 @@
 插入：
 
     insert(list, key, value) // 在跳跃表list中，插入值为value的节点
-        update[1...level];
+        update[1...level]; // 临时节点
         node = list->header; // 获取跳跃表头
         for i = list->levelCount to 0 do
             while node->forward[i]->data < key do
                 node = node->forward[i];
-            update[i] = node
-        node = node->forward[i];'
-        if node->data == key then
+            update[i] = node; // 临时节点指向目标节点的前一个节点
+        node = node->forward[0]; // 目标节点
+        if node->data == key then // key值相同，只需要修改相应的value即可，不需要在重新申请信息的节点
             node->value = value;
-        else
-            v = randomLevel();
-            if v > list->levelCount then
-                for i = list->level + 1 to v do
+        else // 如果key不相同
+            v = randomLevel(); // 首先随机生成一个节点指针阈的层数。作为示例，这里给出一个随机算法
+            if v > list->levelCount then // 判断与当前链中的节点的层数大小
+                for i = list->level + 1 to v do // 当前链中，节点的层数需要改变
                     update[i] = list->header;
                 list->level = v;
-             node = newNode(v, key, val);
-             for i = 1 to level do
-                x->forward[i] = update[i]->forward[i]
-                update[i]->forward[i] = x;
+             node = newNode(v, key, val); // 申请新的节点空间
+             for i = 1 to level do // 逐层修改指针
+                node->forward[i] = update[i]->forward[i]
+                update[i]->forward[i] = node;
+
+
+    int randomLevel()
+    {
+        int v = 1; // 至少一层
+        while (random() < p && v < MaxLevel) // p为指定的概率，当小于这个概率时，才能满足
+            v = v + 1; // 至少为两层，所以 +1
+        return v;
+    }
 
 ##### 跳跃表的动态特性
 **为了方便解释，从这一小节开始，把节点指针域的个数改称为索引个数**。
@@ -126,12 +136,12 @@
 
 对于查询而言，真的很美好。但对于插入来说，情况就有些不同了，毕竟插入操作涉及对结构的更改。这会导致跳跃表节点分布不均匀。试想一下，如过在上面的图中插入一个节点会怎样。严格维护跳跃表结构的道理如同严格维持一棵AVL树一样，显得过于严苛，这种做法对于插入频繁的场景，是没有太多好处的。也因此，在保证性能还可以的前提下，结构上一定的松散在实际中，应用价值更大，就像RB树。对于跳跃表，通过随机决定新节点指针阈的数量，而不是硬性决定。实验表明跳跃表时间性能如同许多平衡搜索树一样的高效而且，它的实现更为简单(相比于实现一个平衡二叉树)。
 
-
-
 ![](https://github.com/WalkingNL/Pics/blob/master/SkipList7.jpg)
 
 ### Redis中的SkipList
+在进一步阅读本节的内容之前，可以先看一下我翻译的一篇[文章]()，当然了，你也可以直接去官网阅读，这是[地址](https://redis.io/topics/data-types-intro)。
 
+上面的内容，基础性的介绍了跳跃表。在本节中，将会剖析跳跃表在Redis中的应用。准确的说是在Sorted set中的应用。
 
 
 
