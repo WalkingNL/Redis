@@ -1,9 +1,9 @@
-*我用c语言简单实现了一个跳跃表，参看这个主题外面的SkipList.cpp文件。不过在本文关于跳跃表的介绍中，为了篇幅的缘故，我采用了伪代码*
+*我用c语言简单实现了一个跳跃表，参看这个主题外面的SkipList.cpp文件(更多的代码实现，可以参考[这里](https://www.geeksforgeeks.org/skip-list-set-2-insertion/))。不过在本文关于跳跃表的介绍中，为了篇幅的缘故，我采用了伪代码*
 
-*对于skip list中文叫法多有两种，跳表或是跳跃表，本文统一称 跳跃表*
+*对于skip list，中文叫法多有两种，跳表或是跳跃表，本文统一称 跳跃表*
 
 ## 跳跃表
-看了很多的博客文章，对跳跃表本身的介绍已经足够多了。不过，我还是想发表一些自己的想法，所以计划写这篇文章。想写很多内容，所以不打算结题。哈哈，这篇文章估计会写的非常长。
+这里有一个MIT的讲解跳跃表的[视频](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-12-skip-lists/)，如果听不懂的话，视频的下方有英文文字，这儿还有对应的[PPT](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-12-skip-lists/lec12.pdf)，可以结合起来，慢慢看。另外，还有很多的博客文章，对跳跃表本身的介绍已经足够多了。不过，我还是想发表一些自己的想法，所以计划写这篇文章。想写很多内容，所以不打算结题。哈哈，这篇文章估计会写的非常长。
 
 ### 认识跳跃表(skiplist)
 2010年冬季的一天，自学完链表之后。当时就有想过，如果把指针域改成数组的形式会怎样？可又想，数据域就一个整型值，指针域那么大，不是太浪费了吗[当时的想法就这么简单，以至于阉割了自己更早接触到跳跃表的可能]？至此，这个想法也就终止了。几年后，在算法与数据结构那本书中第一次接触到跳跃表时，不禁有些遗憾。下面，首先简单看一下单链表，这里用C语言的结构体表示，如下。如果每一个节点用指针连起来，结构上如下面的图所示。
@@ -141,7 +141,7 @@
 ### Redis中的SkipList
 在进一步阅读本节的内容之前，可以先看一下我翻译的一篇[文章](https://github.com/WalkingNL/Redis/blob/master/Redis%20Sorted%20sets(译文).md)，当然了，你也可以直接去官网阅读，这是[地址](https://redis.io/topics/data-types-intro)。
 
-上面的内容，基础性的介绍了跳跃表。在本节中，将会剖析跳跃表在Redis中的应用。准确的说是在Sorted set中的应用。
+上面的内容，基础性的介绍了跳跃表。在本节中，将会剖析跳跃表在Redis中的应用。准确的说是在Sorted set中的应用。SkipList作为在Redis中，有序集合键的底层实现之一(另一个是hash table)，当一个有序集合包含的元素比较多，又或者有序集合中元素的成员(member)是比较长的字符串时，Redis就会选择跳跃表作为有序集合的底层实现。此外，在Redis中，另一个用到SkipList这种数据结构的地方就是在集群节点中(源自黄健宏的《Redis设计与实现》一书)。
 
 
 
