@@ -143,7 +143,50 @@
 
 上面的内容，基础性的介绍了跳跃表。在本节中，将会剖析跳跃表在Redis中的应用。准确的说是在Sorted set中的应用。SkipList作为在Redis中，有序集合键的底层实现之一(另一个是hash table)，当一个有序集合包含的元素比较多，又或者有序集合中元素的成员(member)是比较长的字符串时，Redis就会选择跳跃表作为有序集合的底层实现。此外，在Redis中，另一个用到SkipList这种数据结构的地方就是在集群节点中(源自黄健宏的《Redis设计与实现》一书)。
 
+Redis的跳跃表由`server.h/zskiplistNode`和`server.h/zskiplist`两个结构体定义，源码如下所示。
 
+    /* ZSETs use a specialized version of Skiplists */
+    typedef struct zskiplistNode {
+        sds ele; // 保存成员对象。在之前的版本中，这里直接是 robj *obj，但之后这里做了一个转换，详细过程见下面的代码
+        double score; // 成为分值，跳跃表中，节点按各自所保存的分值从小到大排列
+        struct zskiplistNode *backward; // 后退指针，指向当前节点的前一个节点。作用是从后往前的遍历
+        struct zskiplistLevel {
+            struct zskiplistNode *forward; // 前进指针，指向当前后续的指针
+            unsigned long span; // 跨度，记录forward指向的节点，和当前节点的距离
+        } level[]; // 
+    } zskiplistNode;
+
+    typedef struct zskiplist {
+        struct zskiplistNode *header, *tail; // 分别指向跳跃表结构的头节点及尾节点
+        unsigned long length; // 当前跳跃表中包含的节点的个数
+        int level; // 记录跳跃表中，层数的最大值，也即指针域个数的最大值
+    } zskiplist;
+    
+    
+ `sds ele`的出现，为什么要做这样的一个转换呢？
+ 
+     typedef struct client {
+        size_t querybuf_peak;   /* Recent (100ms or more) peak of querybuf size. */
+        int argc;               /* Num of arguments of current command. */
+        robj **argv;  // 当前命令参数
+        struct redisCommand *cmd, *lastcmd;  /* Last command executed. */
+    } client;
+
+/* This generic command implements both ZADD and ZINCRBY. */
+  
+    void zaddGenericCommand(client *c, int flags) {
+        static char *nanerr = "resulting score is not a number (NaN)";
+        robj *key = c->argv[1];
+        robj *zobj;
+        sds ele;
+        ......
+
+        for (j = 0; j < elements; j++) {
+            ......
+            ele = c->argv[scoreidx+1+j*2]->ptr; // 由于argv是client结构体的成员变量，能够看到argv是robj类型的，
+            .....
+        }
+    }
 
 
 
